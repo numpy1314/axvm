@@ -92,9 +92,22 @@ impl<H: AxVMHal, U: AxVCpuHal> AxVM<H, U> {
                     .dtb_load_gpa
                     .unwrap_or(GuestPhysAddr::from_usize(0x9000_0000)),
             };
+
+            #[cfg(target_arch = "loongarch64")]
+            let arch_config = AxVCpuCreateConfig {
+                cpuid: vcpu_id as _,
+                dtb_addr: config
+                    .image_config()
+                    .dtb_load_gpa
+                    .unwrap_or_default()
+                    .as_usize(),
+            };
+
             #[cfg(target_arch = "x86_64")]
             let arch_config = AxVCpuCreateConfig::default();
 
+
+            
             vcpu_list.push(Arc::new(VCpu::new(
                 config.id(),
                 vcpu_id,
@@ -102,6 +115,7 @@ impl<H: AxVMHal, U: AxVCpuHal> AxVM<H, U> {
                 phys_cpu_set,
                 arch_config,
             )?));
+            
         }
         let mut address_space =
             AddrSpace::new_empty(GuestPhysAddr::from(VM_ASPACE_BASE), VM_ASPACE_SIZE)?;
