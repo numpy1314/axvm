@@ -106,8 +106,6 @@ impl<H: AxVMHal, U: AxVCpuHal> AxVM<H, U> {
             #[cfg(target_arch = "x86_64")]
             let arch_config = AxVCpuCreateConfig::default();
 
-
-            
             vcpu_list.push(Arc::new(VCpu::new(
                 config.id(),
                 vcpu_id,
@@ -115,7 +113,6 @@ impl<H: AxVMHal, U: AxVCpuHal> AxVM<H, U> {
                 phys_cpu_set,
                 arch_config,
             )?));
-            
         }
         let mut address_space =
             AddrSpace::new_empty(GuestPhysAddr::from(VM_ASPACE_BASE), VM_ASPACE_SIZE)?;
