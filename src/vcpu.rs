@@ -41,5 +41,10 @@ cfg_if::cfg_if! {
         pub use arm_vcpu::has_hardware_support;
 
         pub use arm_vgic::vtimer::get_sysreg_device;
+    } else if #[cfg(target_arch = "loongarch64")] {
+        pub use loongarch_vcpu::LoongArchVCpu as AxArchVCpuImpl;
+        pub use loongarch_vcpu::LoongArchPerCpu as AxVMArchPerCpuImpl;
+        pub use loongarch_vcpu::LoongArchVCpuCreateConfig as AxVCpuCreateConfig;
+        pub use loongarch_vcpu::has_hardware_support;
     }
 }
